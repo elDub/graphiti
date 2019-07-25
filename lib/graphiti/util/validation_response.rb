@@ -58,8 +58,10 @@ class Graphiti::Util::ValidationResponse
     deserialized_params.each_pair do |name, payload|
       if payload.is_a?(Array)
         related_objects = model.send(name)
+        Graphiti.logger.info ">> payload #{payload}"
         related_objects.each_with_index do |r, index|
           method = payload[index].try(:[], :meta).try(:[], :method)
+          # Graphiti.logger.info ">> payload #{payload}"
           next if [nil, :disassociate].include?(method)
           if method == :destroy
             Graphiti.logger.info ">> destroy #{r.inspect}"
