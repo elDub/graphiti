@@ -60,7 +60,10 @@ class Graphiti::Util::ValidationResponse
         related_objects = model.send(name)
         related_objects.each_with_index do |r, index|
           method = payload[index].try(:[], :meta).try(:[], :method)
-          next if [nil, :destroy, :disassociate].include?(method)
+          next if [nil, :disassociate].include?(method)
+          if method == :destroy
+            Graphiti.logger.info ">> destroy #{r.inspect}"
+          end
           valid = valid_object?(r)
           checks << valid
 
