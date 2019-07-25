@@ -55,11 +55,11 @@ class Graphiti::Util::ValidationResponse
   def all_valid?(model, deserialized_params)
     checks = []
     checks << valid_object?(model)
+    Graphiti.logger.info ">> deserialized_params: #{deserialized_params.inspect}"
     deserialized_params.each_pair do |name, payload|
       if payload.is_a?(Array)
         related_objects = model.send(name)
         Graphiti.logger.info ">> related_objects: #{related_objects.inspect}"
-        Graphiti.logger.info ">> payload #{payload}"
         related_objects.each_with_index do |r, index|
           method = payload[index].try(:[], :meta).try(:[], :method)
           # Graphiti.logger.info ">> payload #{payload}"
